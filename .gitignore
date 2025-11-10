@@ -1,0 +1,36 @@
+# Variables de entorno
+.env
+
+# Logs de Ollama
+ollama.log
+nohup.out
+
+# Datos y modelos
+data/
+models/
+!data/.gitkeep
+!models/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Sistema
+.DS_Store
+Thumbs.db
