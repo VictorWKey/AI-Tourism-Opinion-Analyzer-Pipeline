@@ -17,7 +17,7 @@ Este script hace **TODO** por ti automáticamente:
 ```bash
 cd production
 # Paso 1: Instalar dependencias Python
-./install_dependencies.sh
+./scripts/install_dependencies.sh
 
 # Paso 2: Configurar LLM local
 ./scripts/setup_local_llm_completo.sh
@@ -97,7 +97,6 @@ production/
 ├── main.py                 # Script principal del pipeline
 ├── README.md               # Esta documentación
 ├── requirements.txt        # Dependencias Python necesarias
-├── install_dependencies.sh # Script de instalación automática
 ├── .env.example            # Plantilla de configuración
 ├── .env                    # Tu configuración (no en git)
 │
@@ -114,12 +113,14 @@ production/
 │   └── fase_06_*.py       # Resúmenes (usa LLM)
 │
 ├── scripts/                # Scripts de utilidad
+│   ├── install_dependencies.sh      # Script de instalación automática
 │   ├── setup_local_llm_completo.sh  # 🆕 Setup TODO-EN-UNO (recomendado)
 │   ├── setup_ollama.sh              # Instalación Ollama básica
 │   ├── test_llm_setup.py            # Test de configuración
 │   └── compile_requirements.sh      # Compilar dependencias
 │
 ├── docs/                   # Documentación
+│   ├── INSTALL.md         # Guía de instalación detallada
 │   ├── LLM_SETUP.md       # Guía LLM completa
 │   └── CHANGELOG.md       # Historial de cambios
 │

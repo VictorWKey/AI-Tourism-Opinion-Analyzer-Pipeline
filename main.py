@@ -11,6 +11,7 @@ from core import (
     ClasificadorCategorias,
     AnalizadorJerarquicoTopicos,
     ResumidorInteligente,
+    GeneradorVisualizaciones,
     LLMProvider
 )
 
@@ -70,6 +71,11 @@ def main():
     resumidor = ResumidorInteligente(top_n_subtopicos=3, incluir_neutros=False)
     # Generar los 3 tipos de resumen por defecto
     resumidor.procesar(tipos_resumen=['descriptivo', 'estructurado', 'insights'])
+    
+    # Fase 08: Generación de Visualizaciones
+    print("\n[Fase 08] Generación de Visualizaciones")
+    generador_viz = GeneradorVisualizaciones()
+    generador_viz.procesar()
     
     print("\n" + "="*60)
     print("✅ Pipeline completado exitosamente")

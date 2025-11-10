@@ -7,7 +7,7 @@ Este directorio contiene todo lo necesario para ejecutar el **Pipeline de Produc
 ### Opción Automática
 
 ```bash
-./install_dependencies.sh
+../scripts/install_dependencies.sh
 ```
 
 Este script:
@@ -73,7 +73,7 @@ conda create -n tourism-analyzer python=3.10
 conda activate tourism-analyzer
 
 # Instalar dependencias
-./install_dependencies.sh
+../scripts/install_dependencies.sh
 ```
 
 ### venv (Alternativa)
