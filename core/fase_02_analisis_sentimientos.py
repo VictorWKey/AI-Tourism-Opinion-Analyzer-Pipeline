@@ -124,11 +124,29 @@ class AnalizadorSentimientos:
         except Exception:
             return "Neutro"
     
-    def procesar(self):
+    def ya_procesado(self):
+        """
+        Verifica si esta fase ya fue ejecutada.
+        Revisa si existe la columna 'Sentimiento' en el dataset.
+        """
+        try:
+            df = pd.read_csv(self.DATASET_PATH)
+            return 'Sentimiento' in df.columns
+        except:
+            return False
+    
+    def procesar(self, forzar=False):
         """
         Procesa el dataset completo y agrega columna 'Sentimiento'.
         Modifica el archivo dataset.csv directamente.
+        
+        Args:
+            forzar: Si es True, ejecuta incluso si ya fue procesado
         """
+        if not forzar and self.ya_procesado():
+            print("   ⏭️  Fase ya ejecutada previamente (omitiendo)")
+            return
+        
         # Cargar dataset
         df = pd.read_csv(self.DATASET_PATH)
         

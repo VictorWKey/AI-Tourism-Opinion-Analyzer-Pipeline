@@ -53,11 +53,29 @@ class ProcesadorBasico:
         
         return ' '.join(texto_partes) if texto_partes else ''
     
-    def procesar(self):
+    def ya_procesado(self):
+        """
+        Verifica si esta fase ya fue ejecutada.
+        Revisa si existe la columna 'TituloReview' en el dataset.
+        """
+        try:
+            df = pd.read_csv(self.dataset_path)
+            return 'TituloReview' in df.columns
+        except:
+            return False
+    
+    def procesar(self, forzar=False):
         """
         Ejecuta el pipeline completo de procesamiento básico.
         Modifica el dataset CSV directamente.
+        
+        Args:
+            forzar: Si es True, ejecuta incluso si ya fue procesado
         """
+        if not forzar and self.ya_procesado():
+            print("   ⏭️  Fase ya ejecutada previamente (omitiendo)")
+            return
+        
         # Cargar dataset
         self.df = pd.read_csv(self.dataset_path)
         filas_iniciales = len(self.df)

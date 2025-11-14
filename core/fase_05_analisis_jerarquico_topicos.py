@@ -404,14 +404,32 @@ IMPORTANTE - FORMATO JSON:
         
         return mapeo_topicos
     
-    def procesar(self):
+    def ya_procesado(self):
+        """
+        Verifica si esta fase ya fue ejecutada.
+        Revisa si existe la columna 'Topico' en el dataset.
+        """
+        try:
+            df = pd.read_csv(self.dataset_path)
+            return 'Topico' in df.columns
+        except:
+            return False
+    
+    def procesar(self, forzar=False):
         """
         Procesa el dataset completo:
         1. Identifica categorías con suficientes opiniones
         2. Aplica BERTopic a cada categoría
         3. Etiqueta tópicos con LLM
         4. Añade columna 'Topico' al dataset como DICCIONARIO {categoria: topico}
+        
+        Args:
+            forzar: Si es True, ejecuta incluso si ya fue procesado
         """
+        if not forzar and self.ya_procesado():
+            print("   ⏭️  Fase ya ejecutada previamente (omitiendo)")
+            return
+        
         # Cargar dataset
         df = pd.read_csv(self.dataset_path)
         

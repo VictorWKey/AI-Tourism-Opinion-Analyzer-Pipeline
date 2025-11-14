@@ -60,7 +60,14 @@ class GeneradorVisualizaciones:
         self.visualizaciones_generadas = []
         self.visualizaciones_omitidas = []
     
-    def procesar(self):
+    def ya_procesado(self):
+        """
+        Verifica si esta fase ya fue ejecutada.
+        Revisa si existe el directorio de visualizaciones con archivos.
+        """
+        return self.output_dir.exists() and len(list(self.output_dir.glob('*.png'))) > 0
+    
+    def procesar(self, forzar=False):
         """
         Pipeline principal de generación de visualizaciones.
         
@@ -69,9 +76,15 @@ class GeneradorVisualizaciones:
         3. Crea estructura de carpetas
         4. Genera visualizaciones por sección
         5. Genera reporte final
+        
+        Args:
+            forzar: Si es True, ejecuta incluso si ya fue procesado
         """
+        if not forzar and self.ya_procesado():
+            print("   ⏭️  Fase ya ejecutada previamente (omitiendo)")
+            return
         print("\n" + "="*60)
-        print("FASE 08: GENERACIÓN DE VISUALIZACIONES")
+        print("FASE 07: GENERACIÓN DE VISUALIZACIONES")
         print("="*60)
         
         # 1. Cargar datos
@@ -188,11 +201,11 @@ class GeneradorVisualizaciones:
         reporte = {
             "fecha_generacion": datetime.now().isoformat(),
             "dataset": {
-                "total_opiniones": resumen_validacion['total_opiniones'],
-                "tiene_fechas": resumen_validacion['tiene_fechas'],
-                "rango_temporal_dias": resumen_validacion['rango_temporal_dias'],
-                "categorias_identificadas": resumen_validacion['categorias_validas'],
-                "cobertura_topicos": resumen_validacion['tiene_topicos']
+                "total_opiniones": int(resumen_validacion['total_opiniones']),
+                "tiene_fechas": bool(resumen_validacion['tiene_fechas']),
+                "rango_temporal_dias": int(resumen_validacion['rango_temporal_dias']) if resumen_validacion['rango_temporal_dias'] is not None else 0,
+                "categorias_identificadas": int(resumen_validacion['categorias_validas']),
+                "cobertura_topicos": bool(resumen_validacion['tiene_topicos'])
             },
             "visualizaciones": {
                 "total_generadas": len(self.visualizaciones_generadas),

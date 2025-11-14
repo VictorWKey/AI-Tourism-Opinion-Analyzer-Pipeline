@@ -147,14 +147,32 @@ class ClasificadorCategorias:
         
         print(f"   • Probabilidades guardadas en: {scores_path}")
     
-    def procesar(self):
+    def ya_procesado(self):
+        """
+        Verifica si esta fase ya fue ejecutada.
+        Revisa si existe la columna 'Categorias' en el dataset.
+        """
+        try:
+            df = pd.read_csv(self.dataset_path)
+            return 'Categorias' in df.columns
+        except:
+            return False
+    
+    def procesar(self, forzar=False):
         """
         Procesa el dataset completo:
         1. Carga el modelo y thresholds
         2. Realiza predicciones
         3. Añade columna 'Categorias' al dataset
         4. Guarda probabilidades en data/shared/ para otras fases
+        
+        Args:
+            forzar: Si es True, ejecuta incluso si ya fue procesado
         """
+        if not forzar and self.ya_procesado():
+            print("   ⏭️  Fase ya ejecutada previamente (omitiendo)")
+            return
+        
         # Cargar dataset
         df = pd.read_csv(self.dataset_path)
         

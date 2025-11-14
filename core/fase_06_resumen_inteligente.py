@@ -47,7 +47,7 @@ class ResumidorInteligente:
         """
         self.dataset_path = 'data/dataset.csv'
         self.scores_path = 'data/shared/categorias_scores.json'
-        self.output_path = 'data/shared/resumenes.json'
+        self.output_path = Path('data/shared/resumenes.json')
         self.top_n_subtopicos = top_n_subtopicos
         self.incluir_neutros = incluir_neutros
         
@@ -497,7 +497,14 @@ Enfócate en información accionable para la toma de decisiones de gestión tur�
         
         print(f"\n   ✓ Resúmenes guardados en: {self.output_path}")
     
-    def procesar(self, tipos_resumen: List[str] = None):
+    def ya_procesado(self):
+        """
+        Verifica si esta fase ya fue ejecutada.
+        Revisa si existe el archivo de resúmenes.
+        """
+        return self.output_path.exists()
+    
+    def procesar(self, tipos_resumen: List[str] = None, forzar: bool = False):
         """
         Ejecuta el pipeline completo de generación de resúmenes.
         
@@ -505,7 +512,11 @@ Enfócate en información accionable para la toma de decisiones de gestión tur�
             tipos_resumen: Lista de tipos de resumen a generar.
                           Opciones: 'descriptivo', 'estructurado', 'insights'
                           Por defecto: ['descriptivo', 'estructurado', 'insights']
+            forzar: Si es True, ejecuta incluso si ya fue procesado
         """
+        if not forzar and self.ya_procesado():
+            print("   ⏭️  Fase ya ejecutada previamente (omitiendo)")
+            return
         # Validar tipos de resumen
         tipos_validos = {'descriptivo', 'estructurado', 'insights'}
         

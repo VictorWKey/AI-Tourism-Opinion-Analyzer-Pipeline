@@ -16,6 +16,27 @@ from core import (
 )
 
 
+# ============================================================
+# CONFIGURACIÓN DE FASES
+# ============================================================
+# Controla qué fases se ejecutan.
+# True = Ejecutar siempre
+# False = Omitir si ya fue ejecutada previamente
+# Nota: Si una fase NO ha sido ejecutada nunca, se ejecutará
+#       automáticamente sin importar esta configuración.
+# ============================================================
+
+CONFIG_FASES = {
+    'fase_01': False,   # Procesamiento Básico
+    'fase_02': False,   # Análisis de Sentimientos
+    'fase_03': False,   # Análisis de Subjetividad
+    'fase_04': False,   # Clasificación de Categorías
+    'fase_05': False,   # Análisis Jerárquico de Tópicos
+    'fase_06': False,   # Resumen Inteligente
+    'fase_07': True,   # Generación de Visualizaciones
+}
+
+
 def main():
     """Ejecuta el pipeline completo de procesamiento."""
     print("="*60)
@@ -41,27 +62,27 @@ def main():
     # Fase 01: Procesamiento Básico
     print("\n[Fase 01] Procesamiento Básico de Datos")
     procesador_basico = ProcesadorBasico()
-    procesador_basico.procesar()
+    procesador_basico.procesar(forzar=CONFIG_FASES['fase_01'])
     
     # Fase 02: Análisis de Sentimientos
     print("\n[Fase 02] Análisis de Sentimientos")
     analizador_sentimientos = AnalizadorSentimientos()
-    analizador_sentimientos.procesar()
+    analizador_sentimientos.procesar(forzar=CONFIG_FASES['fase_02'])
     
     # Fase 03: Análisis de Subjetividad
     print("\n[Fase 03] Análisis de Subjetividad")
     analizador_subjetividad = AnalizadorSubjetividad()
-    analizador_subjetividad.procesar()
+    analizador_subjetividad.procesar(forzar=CONFIG_FASES['fase_03'])
     
     # Fase 04: Clasificación de Categorías Multi-etiqueta
     print("\n[Fase 04] Clasificación de Categorías")
     clasificador_categorias = ClasificadorCategorias()
-    clasificador_categorias.procesar()
+    clasificador_categorias.procesar(forzar=CONFIG_FASES['fase_04'])
     
     # Fase 05: Análisis Jerárquico de Tópicos
     print("\n[Fase 05] Análisis Jerárquico de Tópicos")
     analizador_topicos = AnalizadorJerarquicoTopicos()
-    analizador_topicos.procesar()
+    analizador_topicos.procesar(forzar=CONFIG_FASES['fase_05'])
     
     # Fase 06: Resumen Inteligente de Reseñas
     print("\n[Fase 06] Resumen Inteligente de Reseñas")
@@ -70,12 +91,12 @@ def main():
     # - incluir_neutros=False: Excluir sentimientos neutros (solo Positivo y Negativo)
     resumidor = ResumidorInteligente(top_n_subtopicos=3, incluir_neutros=False)
     # Generar los 3 tipos de resumen por defecto
-    resumidor.procesar(tipos_resumen=['descriptivo', 'estructurado', 'insights'])
+    resumidor.procesar(tipos_resumen=['descriptivo', 'estructurado', 'insights'], forzar=CONFIG_FASES['fase_06'])
     
-    # Fase 08: Generación de Visualizaciones
-    print("\n[Fase 08] Generación de Visualizaciones")
+    # Fase 07: Generación de Visualizaciones
+    print("\n[Fase 07] Generación de Visualizaciones")
     generador_viz = GeneradorVisualizaciones()
-    generador_viz.procesar()
+    generador_viz.procesar(forzar=CONFIG_FASES['fase_07'])
     
     print("\n" + "="*60)
     print("✅ Pipeline completado exitosamente")

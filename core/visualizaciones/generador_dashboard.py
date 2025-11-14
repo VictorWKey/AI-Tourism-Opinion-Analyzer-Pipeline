@@ -51,7 +51,7 @@ class GeneradorDashboard:
         
         # Título
         ax.text(0.5, 0.95, 'RESUMEN DE VALIDACIÓN DEL DATASET', 
-                ha='center', **ESTILOS['titulo'], fontsize=18)
+                ha='center', **ESTILOS['titulo'])
         
         # Información general
         y_pos = 0.85
@@ -79,7 +79,7 @@ class GeneradorDashboard:
         
         # Recomendaciones
         y_pos -= 0.05
-        ax.text(0.1, y_pos, 'RECOMENDACIONES:', **ESTILOS['subtitulo'], fontsize=14)
+        ax.text(0.1, y_pos, 'RECOMENDACIONES:', **ESTILOS['subtitulo'])
         y_pos -= 0.05
         
         recomendaciones = []
@@ -105,7 +105,7 @@ class GeneradorDashboard:
         
         # Título principal
         fig.suptitle('DASHBOARD EJECUTIVO - ANÁLISIS DE OPINIONES TURÍSTICAS', 
-                     **ESTILOS['titulo'], fontsize=20, y=0.98)
+                     **ESTILOS['titulo'], y=0.98)
         
         # Cuadrante 1: Distribución de sentimientos (donut)
         ax1 = fig.add_subplot(gs[0, 0])
@@ -186,7 +186,9 @@ class GeneradorDashboard:
         
         ax.axis('off')
         ax.set_title('✓ TOP 5 FORTALEZAS DEL DESTINO', 
-                     **ESTILOS['subtitulo'], fontsize=14, pad=20, color=COLORES['positivo'])
+                     fontsize=ESTILOS['subtitulo']['fontsize'], 
+                     fontweight=ESTILOS['subtitulo']['fontweight'],
+                     pad=20, color=COLORES['positivo'])
         
         y_pos = 0.85
         for i, (cat, pct) in enumerate(fortalezas[:5], 1):
@@ -201,7 +203,9 @@ class GeneradorDashboard:
         
         ax.axis('off')
         ax.set_title('✗ TOP 5 DEBILIDADES DEL DESTINO', 
-                     **ESTILOS['subtitulo'], fontsize=14, pad=20, color=COLORES['negativo'])
+                     fontsize=ESTILOS['subtitulo']['fontsize'],
+                     fontweight=ESTILOS['subtitulo']['fontweight'],
+                     pad=20, color=COLORES['negativo'])
         
         y_pos = 0.85
         for i, (cat, pct) in enumerate(debilidades[:5], 1):
@@ -253,7 +257,7 @@ class GeneradorDashboard:
         ax.axis('off')
         
         # Título
-        ax.text(0.5, 0.95, 'KPIS PRINCIPALES', ha='center', **ESTILOS['titulo'], fontsize=20)
+        ax.text(0.5, 0.95, 'KPIS PRINCIPALES', ha='center', **ESTILOS['titulo'])
         
         # Calcular KPIs
         total_opiniones = len(self.df)

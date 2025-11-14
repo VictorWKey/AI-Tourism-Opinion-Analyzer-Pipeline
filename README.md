@@ -50,6 +50,32 @@ pip install -r requirements.txt
 python main.py
 ```
 
+### 🎯 Control de Ejecución de Fases
+
+El pipeline ahora permite controlar qué fases se ejecutan mediante el diccionario `CONFIG_FASES` en `main.py`:
+
+```python
+CONFIG_FASES = {
+    'fase_01': True,   # Procesamiento Básico
+    'fase_02': True,   # Análisis de Sentimientos
+    'fase_03': True,   # Análisis de Subjetividad
+    'fase_04': True,   # Clasificación de Categorías
+    'fase_05': True,   # Análisis Jerárquico de Tópicos
+    'fase_06': True,   # Resumen Inteligente
+    'fase_07': True,   # Generación de Visualizaciones
+}
+```
+
+**Comportamiento:**
+- `True` = La fase se ejecuta siempre (incluso si ya fue ejecutada)
+- `False` = La fase se omite SI ya fue ejecutada previamente
+- **Inteligente:** Si una fase NO ha sido ejecutada nunca, se ejecutará automáticamente sin importar la configuración
+
+Esto permite:
+- ✅ Re-ejecutar solo fases específicas sin procesar todo
+- ✅ Ahorrar tiempo omitiendo fases ya completadas
+- ✅ Desarrollo iterativo más eficiente
+
 ### 💳 Opción 3: Modo API (OpenAI - Pago)
 
 ```bash
@@ -135,7 +161,7 @@ production/
 
 ## 🔧 Estructura del Pipeline
 
-El sistema ejecuta 6 fases secuenciales:
+El sistema ejecuta 7 fases secuenciales:
 
 1. **Procesamiento Básico**: Limpieza y normalización de datos
 2. **Análisis de Sentimientos**: Clasificación Positivo/Negativo/Neutro
@@ -143,6 +169,7 @@ El sistema ejecuta 6 fases secuenciales:
 4. **Clasificación de Categorías**: Etiquetado multi-etiqueta con BERT
 5. **Análisis de Tópicos**: Identificación de sub-temas con BERTopic + LLM ⭐
 6. **Resumen Inteligente**: Generación de resúmenes con LLM ⭐
+7. **Visualizaciones**: Generación de gráficos profesionales (dashboard, sentimientos, categorías, tópicos, temporal)
 
 ⭐ = Fases que utilizan LLM configurable
 

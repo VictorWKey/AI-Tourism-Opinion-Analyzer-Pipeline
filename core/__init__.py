@@ -11,7 +11,7 @@ from .fase_03_analisis_subjetividad import AnalizadorSubjetividad
 from .fase_04_clasificacion_categorias import ClasificadorCategorias
 from .fase_05_analisis_jerarquico_topicos import AnalizadorJerarquicoTopicos
 from .fase_06_resumen_inteligente import ResumidorInteligente
-from .fase_08_visualizaciones import GeneradorVisualizaciones
+from .fase_07_visualizaciones import GeneradorVisualizaciones
 
 __all__ = [
     'LLMProvider',
