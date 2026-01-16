@@ -7,6 +7,7 @@ Analiza sentimientos de las opiniones turísticas usando HuggingFace BERT.
 import pandas as pd
 import warnings
 warnings.filterwarnings('ignore')
+from tqdm import tqdm
 
 try:
     from transformers import pipeline
@@ -157,10 +158,7 @@ class AnalizadorSentimientos:
         total = len(df)
         sentimientos = []
         
-        for i, texto in enumerate(df['TituloReview']):
-            if i % 50 == 0 and i > 0:
-                print(f"   Progreso: {i}/{total} ({i/total*100:.1f}%)")
-            
+        for i, texto in enumerate(tqdm(df['TituloReview'], desc="   Progreso")):
             sentimiento = self.analizar_texto(texto)
             sentimientos.append(sentimiento)
         

@@ -8,10 +8,11 @@ import pandas as pd
 import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, logging as transformers_logging
 import json
 import warnings
 warnings.filterwarnings('ignore')
+transformers_logging.set_verbosity_error()
 
 
 class ClasificadorCategorias:
@@ -49,7 +50,11 @@ class ClasificadorCategorias:
     
     def _cargar_modelo(self):
         """Carga el modelo BERT fine-tuned y los thresholds optimizados (si existen)."""
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
+        try:
+            self.tokenizer = AutoTokenizer.from_pretrained(self.model_path, fix_mistral_regex=True)
+        except TypeError:
+            # Si hay error con fix_mistral_regex, cargar sin el flag
+            self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
         self.model = AutoModelForSequenceClassification.from_pretrained(self.model_path)
         self.model.to(self.device)
         self.model.eval()
@@ -63,8 +68,6 @@ class ClasificadorCategorias:
         except FileNotFoundError:
             # Usar 0.5 como threshold por defecto para todas las clases
             self.optimal_thresholds = np.full(len(self.label_names), 0.5)
-            print(f"   ⚠️  No se encontró {self.thresholds_path}")
-            print(f"   ℹ️  Usando threshold por defecto: 0.5 para todas las clases")
     
     def _crear_dataset(self, texts):
         """Crea un dataset PyTorch para las predicciones."""
