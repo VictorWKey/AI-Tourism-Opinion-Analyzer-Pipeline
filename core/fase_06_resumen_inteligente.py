@@ -162,11 +162,19 @@ class ResumidorInteligente:
         # Eliminar filas sin categoría dominante
         df_filtrado = df_filtrado[df_filtrado['CategoriaDominante'].notna()]
         
+        # Verificar si hay filas para procesar
+        if len(df_filtrado) == 0:
+            print("   ⚠️  No hay reseñas con categorías asignadas para seleccionar")
+            return pd.DataFrame()
+        
         # 3b. Agregar tópico específico de la categoría dominante
-        df_filtrado['TopicoRelevante'] = df_filtrado.apply(
-            lambda row: self._obtener_topico_para_categoria(row.name, row['CategoriaDominante']),
-            axis=1
-        )
+        topicos_relevantes = []
+        for idx, row in df_filtrado.iterrows():
+            topico = self._obtener_topico_para_categoria(idx, row['CategoriaDominante'])
+            topicos_relevantes.append(topico)
+        
+        df_filtrado = df_filtrado.copy()
+        df_filtrado['TopicoRelevante'] = topicos_relevantes
         
         # 4. Seleccionar top N subtópicos por categoría
         df_filtrado = self._filtrar_top_subtopicos(df_filtrado)

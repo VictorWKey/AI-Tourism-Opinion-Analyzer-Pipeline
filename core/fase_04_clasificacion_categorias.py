@@ -48,18 +48,23 @@ class ClasificadorCategorias:
         self.optimal_thresholds = None
     
     def _cargar_modelo(self):
-        """Carga el modelo BERT fine-tuned y los thresholds optimizados."""
+        """Carga el modelo BERT fine-tuned y los thresholds optimizados (si existen)."""
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
         self.model = AutoModelForSequenceClassification.from_pretrained(self.model_path)
         self.model.to(self.device)
         self.model.eval()
         
-        # Cargar thresholds optimizados
-        with open(self.thresholds_path, 'r', encoding='utf-8') as f:
-            thresholds_dict = json.load(f)
-        
-        # Convertir a array en el orden correcto
-        self.optimal_thresholds = np.array([thresholds_dict[label] for label in self.label_names])
+        # Cargar thresholds optimizados (si existen, sino usar 0.5 por defecto)
+        try:
+            with open(self.thresholds_path, 'r', encoding='utf-8') as f:
+                thresholds_dict = json.load(f)
+            self.optimal_thresholds = np.array([thresholds_dict[label] for label in self.label_names])
+            print(f"   ✅ Thresholds cargados desde: {self.thresholds_path}")
+        except FileNotFoundError:
+            # Usar 0.5 como threshold por defecto para todas las clases
+            self.optimal_thresholds = np.full(len(self.label_names), 0.5)
+            print(f"   ⚠️  No se encontró {self.thresholds_path}")
+            print(f"   ℹ️  Usando threshold por defecto: 0.5 para todas las clases")
     
     def _crear_dataset(self, texts):
         """Crea un dataset PyTorch para las predicciones."""

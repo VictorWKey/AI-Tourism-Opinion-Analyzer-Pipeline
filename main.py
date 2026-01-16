@@ -27,12 +27,12 @@ from core import (
 # ============================================================
 
 CONFIG_FASES = {
-    'fase_01': False,   # Procesamiento Básico
-    'fase_02': False,   # Análisis de Sentimientos
-    'fase_03': False,   # Análisis de Subjetividad
-    'fase_04': False,   # Clasificación de Categorías
-    'fase_05': False,   # Análisis Jerárquico de Tópicos
-    'fase_06': False,   # Resumen Inteligente
+    'fase_01': True,   # Procesamiento Básico
+    'fase_02': True,   # Análisis de Sentimientos
+    'fase_03': True,   # Análisis de Subjetividad
+    'fase_04': True,   # Clasificación de Categorías
+    'fase_05': True,   # Análisis Jerárquico de Tópicos
+    'fase_06': True,   # Resumen Inteligente
     'fase_07': True,   # Generación de Visualizaciones
 }
 
